@@ -31,6 +31,7 @@
   刘要坤
   九天未来
   2018.07.11
+  
 */
 
 
@@ -38,9 +39,9 @@
 
 /**************************系统参数控制区***************************************/
 
-#define SETGPS 50   //GPS释放高度   单位m 1500 + 800（海拉尔气象站基准海拔）
-#define SETPRE 50   //气压计释放高度 单位m
-#define SETDIS 3000  //GPS距离     单位m
+#define SETGPS 1500   //GPS释放高度   单位m 1500（海拉尔气象站基准海拔700）
+#define SETPRE 1500   //气压计释放高度 单位m
+#define SETDIS 30000  //GPS距离     单位m
 
 #define NSETGPSBASE   //屏蔽之后将跳过初始化中的定位操作，直接使用写入的参数作为基准经纬度。
 float baseLat = 4915.00,baseLon = 11942.10;//海拉尔气象站经纬度    格式：dddmm.mmmmm
@@ -557,10 +558,13 @@ while(1){
   
   //蓝牙输出
    #ifdef blueDebug
+    BLEser.print("distance:");
     BLEser.print(distance);
     BLEser.print("m\t");
+    BLEser.print("\tBmpAltitude:");
     BLEser.print(BmpAltitude);
     BLEser.print("m\t");
+    BLEser.print("\tgpsHight:");
     BLEser.print(gpsHight);
     BLEser.println("m");
    #endif   
@@ -648,7 +652,7 @@ while(1){
   PT_END(pt);
 }
 
-//任务9：logger 200ms
+//任务9：logger 100ms
 static int thread9_entry(struct pt *pt){             
 
   PT_BEGIN(pt);
@@ -659,7 +663,7 @@ SwriteData("\r\ncode run:");
 iwriteData(gpsData.minu - baseTime);
 SwriteDataLn("min");
 SwriteData("\r\n\r\ncode speed:");
-iwriteData(millis() - timeMark);
+iwriteData(millis() - timeMark - 100);
 SwriteDataLn("ms");
 timeMark = millis();
 
